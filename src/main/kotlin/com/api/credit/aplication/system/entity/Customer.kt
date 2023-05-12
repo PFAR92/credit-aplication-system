@@ -23,7 +23,7 @@ class Customer (
     var email: String = "",
 
     @Column(nullable = false)
-    val income: BigDecimal = BigDecimal.ZERO,
+    var income: BigDecimal = BigDecimal.ZERO,
 
     @Column(nullable = false)
     var password: String = "",
