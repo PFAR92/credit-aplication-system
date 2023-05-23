@@ -4,9 +4,6 @@ spring:
     username: paulo
   jpa:
     show-sql: true
-    #hibernate:
-    properties:
-      hibernate.format_sql: true
   h2:
     console:
       enabled:  true
@@ -14,3 +11,7 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
