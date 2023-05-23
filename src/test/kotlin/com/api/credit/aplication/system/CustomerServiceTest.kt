@@ -2,6 +2,7 @@ package com.api.credit.aplication.system
 
 import com.api.credit.aplication.system.entity.Address
 import com.api.credit.aplication.system.entity.Customer
+import com.api.credit.aplication.system.exception.BusinessException
 import com.api.credit.aplication.system.repository.CustomerRepository
 import com.api.credit.aplication.system.service.impl.CustomerService
 import io.mockk.every
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.test.context.ActiveProfiles
 import java.math.BigDecimal
+import java.util.*
 
 @ActiveProfiles("test")
 @ExtendWith(MockKExtension::class)
@@ -35,6 +37,35 @@ class CustomerServiceTest {
         Assertions.assertThat(actual).isNotNull
         Assertions.assertThat(actual).isSameAs(fakeCustomer)
         verify(exactly = 1) { customerRepository.save(fakeCustomer) }
+    }
+    @Test
+    fun `should find customer by id`() {
+        //given
+        val fakeId: Long = Random().nextLong()
+        val fakeCustomer: Customer = buildCustomer(id = fakeId)
+        every { customerRepository.findById(fakeId) } returns Optional.of(fakeCustomer)
+
+        //when
+        val actual: Customer = customerService.findById(fakeId)
+
+        //then
+        Assertions.assertThat(actual).isNotNull
+        Assertions.assertThat(actual).isSameAs(fakeCustomer)
+        Assertions.assertThat(actual).isExactlyInstanceOf(Customer::class.java)
+        verify(exactly = 1) { customerRepository.findById(fakeId) }
+    }
+    @Test
+    fun `should not find customer by id invalid id and BusinessExeption`() {
+       //given
+        val fakeId: Long = Random().nextLong()
+        every { customerRepository.findById(fakeId) } returns Optional.empty()
+
+        //when
+        //then
+        Assertions.assertThatExceptionOfType(BusinessException::class.java)
+            .isThrownBy { customerService.findById(fakeId) }
+            .withMessage("Id $fakeId not found")
+        verify(exactly = 1) {customerRepository.findById(fakeId)}
     }
 
     private fun buildCustomer(
