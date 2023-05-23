@@ -1,4 +1,4 @@
-package com.api.credit.aplication.system
+package com.api.credit.aplication.system.service
 
 import com.api.credit.aplication.system.entity.Address
 import com.api.credit.aplication.system.entity.Customer
@@ -9,6 +9,8 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.just
+import io.mockk.runs
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -66,6 +68,21 @@ class CustomerServiceTest {
             .isThrownBy { customerService.findById(fakeId) }
             .withMessage("Id $fakeId not found")
         verify(exactly = 1) {customerRepository.findById(fakeId)}
+    }
+    @Test
+    fun `should delete customer by id`() {
+        //given
+        val fakeId: Long = Random().nextLong()
+        val fakeCustomer: Customer = buildCustomer(id = fakeId)
+        every { customerRepository.findById(fakeId) } returns Optional.of(fakeCustomer)
+        every { customerRepository.delete(fakeCustomer) } just runs
+
+        //when
+        customerService.delete(fakeId)
+
+        //then
+        verify(exactly = 1) { customerRepository.findById(fakeId) }
+        verify(exactly = 1) { customerRepository.delete(fakeCustomer)}
     }
 
     private fun buildCustomer(
