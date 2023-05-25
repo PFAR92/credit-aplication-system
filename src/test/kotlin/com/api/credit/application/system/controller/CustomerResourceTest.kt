@@ -28,8 +28,10 @@ class CustomerResourceTest {
 
     @Autowired
     private lateinit var customerRepository: CustomerRepository
+
     @Autowired
     private lateinit var mockMvc: MockMvc
+
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
@@ -39,6 +41,7 @@ class CustomerResourceTest {
 
     @BeforeEach
     fun setup() = customerRepository.deleteAll()
+
     @AfterEach
     fun tearDown() = customerRepository.deleteAll()
 
@@ -163,6 +166,7 @@ class CustomerResourceTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.details[*]").isNotEmpty)
             .andDo(MockMvcResultHandlers.print())
     }
+
     @Test
     fun `should delete customer by id and return 204 status`() {
         //given
@@ -176,6 +180,7 @@ class CustomerResourceTest {
             .andExpect(MockMvcResultMatchers.status().isNoContent)
             .andDo(MockMvcResultHandlers.print())
     }
+
     @Test
     fun `should not delete customer by id and return 400 status`() {
         //given
@@ -197,6 +202,7 @@ class CustomerResourceTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.details[*]").isNotEmpty)
             .andDo(MockMvcResultHandlers.print())
     }
+
     @Test
     fun `should update a customer and return 200 status`() {
         //given
@@ -221,6 +227,7 @@ class CustomerResourceTest {
             //.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
             .andDo(MockMvcResultHandlers.print())
     }
+
     @Test
     fun `should not update a customer with invalid id and return 400 status`() {
         //given
@@ -240,7 +247,7 @@ class CustomerResourceTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
             .andExpect(
                 MockMvcResultMatchers.jsonPath("$.exception")
-                    .value("class me.dio.credit.application.system.exception.BusinessException")
+                    .value("class com.api.credit.application.system.exception.BusinessException")
             )
             .andExpect(MockMvcResultMatchers.jsonPath("$.details[*]").isNotEmpty)
             .andDo(MockMvcResultHandlers.print())
@@ -273,10 +280,10 @@ class CustomerResourceTest {
         zipCode: String = "45656",
         street: String = "Rua Updated"
     ): CustomerUpdateDto = CustomerUpdateDto(
-            firstName = firstName,
-            lastName = lastName,
-            income = income,
-            zipCode = zipCode,
-            street = street
-        )
+        firstName = firstName,
+        lastName = lastName,
+        income = income,
+        zipCode = zipCode,
+        street = street
+    )
 }

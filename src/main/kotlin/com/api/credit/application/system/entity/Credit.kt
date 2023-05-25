@@ -26,8 +26,8 @@ data class Credit(
     val numberOfInstallments: Int = 0,
 
     @Enumerated
-    val status: com.api.credit.application.system.entity.enumeration.Status = com.api.credit.application.system.entity.enumeration.Status.IN_PROGRESS,
+    val status: Status = Status.IN_PROGRESS,
 
     @ManyToOne
-    var customer: com.api.credit.application.system.entity.Customer? = null,
+    var customer: Customer? = null,
 )

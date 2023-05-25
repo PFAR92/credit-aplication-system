@@ -1,5 +1,8 @@
 package com.api.credit.application.system.service
 
+import com.api.credit.application.system.entity.Address
+import com.api.credit.application.system.entity.Customer
+import com.api.credit.application.system.exception.BusinessException
 import com.api.credit.application.system.repository.CustomerRepository
 import com.api.credit.application.system.service.impl.CustomerService
 import io.mockk.every
@@ -26,7 +29,7 @@ class CustomerServiceTest {
     @Test
     fun `should create customer`() {
         //given
-        val fakeCustomer: com.api.credit.application.system.entity.Customer = buildCustomer()
+        val fakeCustomer: Customer = buildCustomer()
         every { customerRepository.save(any()) } returns fakeCustomer
 
         //when
@@ -42,16 +45,16 @@ class CustomerServiceTest {
     fun `should find customer by id`() {
         //given
         val fakeId: Long = Random().nextLong()
-        val fakeCustomer: com.api.credit.application.system.entity.Customer = buildCustomer(id = fakeId)
+        val fakeCustomer: Customer = buildCustomer(id = fakeId)
         every { customerRepository.findById(fakeId) } returns Optional.of(fakeCustomer)
 
         //when
-        val actual: com.api.credit.application.system.entity.Customer = customerService.findById(fakeId)
+        val actual:Customer = customerService.findById(fakeId)
 
         //then
         Assertions.assertThat(actual).isNotNull
         Assertions.assertThat(actual).isSameAs(fakeCustomer)
-        Assertions.assertThat(actual).isExactlyInstanceOf(com.api.credit.application.system.entity.Customer::class.java)
+        Assertions.assertThat(actual).isExactlyInstanceOf(Customer::class.java)
         verify(exactly = 1) { customerRepository.findById(fakeId) }
     }
 
@@ -63,7 +66,7 @@ class CustomerServiceTest {
 
         //when
         //then
-        Assertions.assertThatExceptionOfType(com.api.credit.application.system.exception.BusinessException::class.java)
+        Assertions.assertThatExceptionOfType(BusinessException::class.java)
             .isThrownBy { customerService.findById(fakeId) }
             .withMessage("Id $fakeId not found")
         verify(exactly = 1) { customerRepository.findById(fakeId) }
@@ -95,13 +98,13 @@ class CustomerServiceTest {
         street: String = "Rua da Jujuba",
         income: BigDecimal = BigDecimal.valueOf(1000.0),
         id: Long = 1L
-    ) = com.api.credit.application.system.entity.Customer(
+    ) = Customer(
         firstName = firstName,
         lastName = lastName,
         cpf = cpf,
         email = email,
         password = password,
-        address = com.api.credit.application.system.entity.Address(
+        address = Address(
             zipCode = zipCode,
             street = street,
         ),
