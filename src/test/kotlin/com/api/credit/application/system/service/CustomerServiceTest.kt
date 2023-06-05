@@ -23,6 +23,7 @@ class CustomerServiceTest {
 
     @MockK
     lateinit var customerRepository: CustomerRepository
+
     @InjectMockKs
     lateinit var customerService: CustomerService
 
@@ -49,7 +50,7 @@ class CustomerServiceTest {
         every { customerRepository.findById(fakeId) } returns Optional.of(fakeCustomer)
 
         //when
-        val actual:Customer = customerService.findById(fakeId)
+        val actual: Customer = customerService.findById(fakeId)
 
         //then
         Assertions.assertThat(actual).isNotNull
@@ -59,7 +60,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    fun `should not find customer by id invalid id and BusinessExeption`() {
+    fun `should not find customer by id invalid id and BusinessException`() {
         //given
         val fakeId: Long = Random().nextLong()
         every { customerRepository.findById(fakeId) } returns Optional.empty()
