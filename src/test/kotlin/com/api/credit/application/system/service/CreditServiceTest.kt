@@ -11,14 +11,11 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
-import io.mockk.mockk
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.springframework.beans.factory.annotation.Autowired
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
@@ -53,6 +50,24 @@ internal class CreditServiceTest {
         Assertions.assertThat(actual).isNotNull
         Assertions.assertThat(actual).isSameAs(fakeCredit)
         verify(exactly = 1) { creditRepository.save(fakeCredit) }
+    }
+
+    @Test
+    fun `should credit find customer`() {
+        //given
+        val fakeId: Long = Random().nextLong()
+        val fakeCreditList = listOf<Credit>(buildCredit())
+        
+        every { customerService.findById(fakeId) } returns buildCustomer()
+        every { creditRepository.findAllByCustomer(fakeId) } returns fakeCreditList
+
+        //when
+        val actualCreditList = creditService.findAllByCustomer(fakeId)
+
+        //then
+        Assertions.assertThat(actualCreditList).isNotNull
+        Assertions.assertThat(actualCreditList).isSameAs(fakeCreditList)
+        verify (exactly = 1) { creditRepository.findAllByCustomer(fakeId) }
     }
 
 
