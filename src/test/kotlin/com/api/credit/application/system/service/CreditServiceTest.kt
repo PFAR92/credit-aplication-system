@@ -57,7 +57,7 @@ internal class CreditServiceTest {
         //given
         val fakeId: Long = Random().nextLong()
         val fakeCreditList = listOf<Credit>(buildCredit())
-        
+
         every { customerService.findById(fakeId) } returns buildCustomer()
         every { creditRepository.findAllByCustomer(fakeId) } returns fakeCreditList
 
@@ -68,6 +68,25 @@ internal class CreditServiceTest {
         Assertions.assertThat(actualCreditList).isNotNull
         Assertions.assertThat(actualCreditList).isSameAs(fakeCreditList)
         verify (exactly = 1) { creditRepository.findAllByCustomer(fakeId) }
+    }
+
+    @Test
+    fun `should credit find by credit code`() {
+        //given
+        val fakeId: Long = Random().nextLong()
+        val fakeCredit = buildCredit()
+        val fakeCreditCode = buildCredit().creditCode
+
+        //when
+        every { customerService.findById(fakeId) } returns buildCustomer()
+        every { creditRepository.findByCreditCode(fakeCreditCode) } returns fakeCredit
+        val actual = creditRepository.findByCreditCode(fakeCreditCode)
+
+        //then
+        Assertions.assertThat(actual).isNotNull
+        Assertions.assertThat(actual).isSameAs(fakeCredit)
+        Assertions.assertThat(actual).isExactlyInstanceOf(Credit::class.java)
+        verify (exactly = 1) { creditRepository.findByCreditCode(fakeCreditCode) }
     }
 
 
