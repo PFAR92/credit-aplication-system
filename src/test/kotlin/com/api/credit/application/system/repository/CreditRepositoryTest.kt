@@ -1,6 +1,5 @@
 package com.api.credit.application.system.repository
 
-import com.api.credit.application.system.entity.Address
 import com.api.credit.application.system.entity.Credit
 import com.api.credit.application.system.entity.Customer
 import org.assertj.core.api.Assertions
@@ -23,12 +22,13 @@ class CreditRepositoryTest {
 
     @Autowired
     lateinit var creditRepository: CreditRepository
+
     @Autowired
     lateinit var testEntityManager: TestEntityManager
 
-    private lateinit var customer: com.api.credit.application.system.entity.Customer
-    private lateinit var credit1: com.api.credit.application.system.entity.Credit
-    private lateinit var credit2: com.api.credit.application.system.entity.Credit
+    private lateinit var customer: Customer
+    private lateinit var credit1: Credit
+    private lateinit var credit2: Credit
 
     @BeforeEach
     fun setup() {
@@ -56,6 +56,7 @@ class CreditRepositoryTest {
         Assertions.assertThat(fakeCredit1).isSameAs(credit1)
         Assertions.assertThat(fakeCredit2).isSameAs(credit2)
     }
+
     @Test
     fun `should find all credits by customer id`() {
         //given
@@ -75,8 +76,8 @@ class CreditRepositoryTest {
         creditValue: BigDecimal = BigDecimal.valueOf(500.0),
         dayFirstInstallment: LocalDate = LocalDate.of(2023, Month.APRIL, 22),
         numberOfInstallments: Int = 5,
-        customer: com.api.credit.application.system.entity.Customer
-    ): com.api.credit.application.system.entity.Credit = com.api.credit.application.system.entity.Credit(
+        customer: Customer
+    ): Credit = Credit(
         creditValue = creditValue,
         dayFirstInstallment = dayFirstInstallment,
         numberOfInstallments = numberOfInstallments,
@@ -92,7 +93,7 @@ class CreditRepositoryTest {
         zipCode: String = "12345",
         street: String = "Rua da Cami",
         income: BigDecimal = BigDecimal.valueOf(1000.0),
-    ) = com.api.credit.application.system.entity.Customer(
+    ) = Customer(
         firstName = firstName,
         lastName = lastName,
         cpf = cpf,

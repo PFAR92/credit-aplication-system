@@ -25,10 +25,10 @@ data class CreditDto(
     @field:NotNull(message = "Invalid Input")
     val customerId: Long
 ) {
-    fun toEntity(): com.api.credit.application.system.entity.Credit = com.api.credit.application.system.entity.Credit(
+    fun toEntity(): Credit = Credit(
         creditValue = this.creditValue,
         dayFirstInstallment = this.dayOffInstallment,
         numberOfInstallments = this.numberOfInstallments,
-        customer = com.api.credit.application.system.entity.Customer(id = this.customerId)
+        customer = Customer(id = this.customerId)
     )
 }

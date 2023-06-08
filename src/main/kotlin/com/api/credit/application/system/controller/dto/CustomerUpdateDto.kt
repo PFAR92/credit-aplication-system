@@ -22,7 +22,7 @@ data class CustomerUpdateDto(
     @field:NotEmpty(message = "Invalid Input")
     val street: String
 ) {
-    fun toEntity(customer: com.api.credit.application.system.entity.Customer): com.api.credit.application.system.entity.Customer {
+    fun toEntity(customer: Customer): Customer {
         customer.firstName = firstName
         customer.lastName = lastName
         customer.income = income

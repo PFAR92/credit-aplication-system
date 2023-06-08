@@ -13,8 +13,8 @@ data class CustomerView(
     val zipCode: String,
     val street: String,
     val id: Long?
-){
-    constructor(customer: com.api.credit.application.system.entity.Customer): this (
+) {
+    constructor(customer: Customer) : this(
         firstName = customer.firstName,
         lastName = customer.lastName,
         cpf = customer.cpf,
