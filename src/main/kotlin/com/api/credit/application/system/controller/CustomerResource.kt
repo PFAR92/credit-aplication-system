@@ -1,5 +1,8 @@
 package com.api.credit.application.system.controller
 
+import com.api.credit.application.system.controller.dto.CustomerDto
+import com.api.credit.application.system.controller.dto.CustomerUpdateDto
+import com.api.credit.application.system.controller.dto.CustomerView
 import com.api.credit.application.system.service.impl.CustomerService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -13,22 +16,18 @@ class CustomerResource(
 ) {
 
     @PostMapping
-    fun saveCustomer(@RequestBody @Valid customerDto: com.api.credit.application.system.controller.dto.CustomerDto): ResponseEntity<com.api.credit.application.system.controller.dto.CustomerView> {
+    fun saveCustomer(@RequestBody @Valid customerDto: CustomerDto): ResponseEntity<CustomerView> {
         val saveCustomer = this.customerService.save(customerDto.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            com.api.credit.application.system.controller.dto.CustomerView(
-                saveCustomer
-            )
+            CustomerView(saveCustomer)
         )
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<com.api.credit.application.system.controller.dto.CustomerView> {
+    fun findById(@PathVariable id: Long): ResponseEntity<CustomerView> {
         val customer = this.customerService.findById(id)
         return ResponseEntity.status(HttpStatus.OK).body(
-            com.api.credit.application.system.controller.dto.CustomerView(
-                customer
-            )
+            CustomerView(customer)
         )
     }
 
@@ -40,17 +39,15 @@ class CustomerResource(
     @PatchMapping
     fun updateCustomer(
         @RequestParam(value = "customerId") id: Long,
-        @RequestBody @Valid customerUpdateDto: com.api.credit.application.system.controller.dto.CustomerUpdateDto
-    ): ResponseEntity<com.api.credit.application.system.controller.dto.CustomerView> {
+        @RequestBody @Valid customerUpdateDto: CustomerUpdateDto
+    ): ResponseEntity<CustomerView> {
 
         val customer = this.customerService.findById(id)
         val customerToUpdate = customerUpdateDto.toEntity(customer)
         val customerUpdate = this.customerService.save(customerToUpdate)
 
         return ResponseEntity.status(HttpStatus.OK).body(
-            com.api.credit.application.system.controller.dto.CustomerView(
-                customerUpdate
-            )
+            CustomerView(customerUpdate)
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.api.credit.application.system.controller
 
+import com.api.credit.application.system.controller.dto.CustomerDto
 import com.api.credit.application.system.controller.dto.CustomerUpdateDto
 import com.api.credit.application.system.entity.Customer
 import com.api.credit.application.system.repository.CustomerRepository
@@ -48,7 +49,7 @@ class CustomerResourceTest {
     @Test
     fun `should create a customer and return 201 status`() {
         //given
-        val customerDto: com.api.credit.application.system.controller.dto.CustomerDto = builderCustomerDto()
+        val customerDto: CustomerDto = builderCustomerDto()
         val valuesAsString = objectMapper.writeValueAsString(customerDto)
 
         //when
@@ -71,11 +72,11 @@ class CustomerResourceTest {
     }
 
     @Test
-    fun `should not save a customer whith same CPF and return 409 status`() {
+    fun `should not save a customer with same CPF and return 409 status`() {
 
         //given
         customerRepository.save(builderCustomerDto().toEntity())
-        val customerDto: com.api.credit.application.system.controller.dto.CustomerDto = builderCustomerDto()
+        val customerDto: CustomerDto = builderCustomerDto()
         val valuesAsString = objectMapper.writeValueAsString(customerDto)
 
         //when
@@ -100,7 +101,7 @@ class CustomerResourceTest {
     @Test
     fun `should not save a customer with empty firstName and return 400 status`() {
         //given
-        val customerDto: com.api.credit.application.system.controller.dto.CustomerDto =
+        val customerDto: CustomerDto =
             builderCustomerDto(firstName = "")
         val valuesAsString = objectMapper.writeValueAsString(customerDto)
 
@@ -262,7 +263,7 @@ class CustomerResourceTest {
         password: String = "1234",
         zipCode: String = "000000",
         street: String = "Rua da Subida, 123",
-    ) = com.api.credit.application.system.controller.dto.CustomerDto(
+    ) = CustomerDto(
         firstName = firstName,
         lastName = lastName,
         cpf = cpf,
